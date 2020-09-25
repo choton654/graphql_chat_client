@@ -4,7 +4,7 @@ import { Menu } from "semantic-ui-react"
 const Layout = ({ children }) => {
   return (
     <div>
-      <Menu>
+      <Menu style={{ marginBottom: 0 }}>
         <Link to="/">
           <Menu.Item>Home</Menu.Item>
         </Link>
@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
         <Link to="/login">
           <Menu.Item>Login</Menu.Item>
         </Link>
-        <Link to="/view-teams">
+        <Link to="/app/view-team">
           <Menu.Item>View Team</Menu.Item>
         </Link>
         <Link to="/app/create-team">

@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client"
+import { navigate } from "gatsby"
 import React, { useState } from "react"
 import { Button, Container, Form, Message } from "semantic-ui-react"
 
@@ -6,6 +7,9 @@ const CREATE_TEAM = gql`
   mutation createTeam($name: String!) {
     createTeam(name: $name) {
       ok
+      team {
+        id
+      }
       error {
         error
       }
@@ -34,6 +38,7 @@ const CreateTeam = () => {
           })
         }
         setTeam("")
+        navigate(`/app/view-team/${res.data.createTeam.team.id}`)
       })
       .catch(err => {
         console.error(err)

@@ -10,9 +10,9 @@ const SendMessageWrapper = styled.div`
 function SendMessage({ channelName }) {
   return (
     <SendMessageWrapper>
-      <div class="ui fluid icon input">
+      <div className="ui fluid icon input">
         <input type="text" placeholder={`Message #${channelName}`} />
-        <i class="search icon"></i>
+        <i className="search icon"></i>
       </div>
     </SendMessageWrapper>
   )
