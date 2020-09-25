@@ -14,7 +14,10 @@ const Layout = ({ children }) => {
         <Link to="/login">
           <Menu.Item>Login</Menu.Item>
         </Link>
-        <Link to="/createTeam">
+        <Link to="/view-teams">
+          <Menu.Item>View Team</Menu.Item>
+        </Link>
+        <Link to="/app/create-team">
           <Menu.Item>Create Team</Menu.Item>
         </Link>
       </Menu>

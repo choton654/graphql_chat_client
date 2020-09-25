@@ -35,7 +35,13 @@ const CreateTeam = () => {
         }
         setTeam("")
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+        setError({
+          ok: true,
+          error: err.message,
+        })
+      })
   }
 
   return (
