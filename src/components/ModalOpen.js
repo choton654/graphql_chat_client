@@ -1,20 +1,9 @@
-import { gql, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { useFormik } from "formik"
 import React from "react"
 import { Button, Form, Input, Modal } from "semantic-ui-react"
-import { allTeamsQuery } from "../containers/Sidebar"
-
-const CREATE_CHANNEL = gql`
-  mutation createChannel($teamId: ID!, $name: String!) {
-    createChannel(teamId: $teamId, name: $name) {
-      ok
-      channel {
-        id
-        name
-      }
-    }
-  }
-`
+import { CREATE_CHANNEL } from "../graphql/mutation"
+import { allTeamsQuery } from "../graphql/query"
 
 function ModalOpen({ open, onClose, teamId }) {
   const formik = useFormik({

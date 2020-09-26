@@ -17,6 +17,7 @@
     "@apollo/client": "^3.2.1",
     "formik": "^2.1.5",
     "gatsby": "^2.24.63",
+    "gatsby-source-graphql": "^2.7.4",
     "jwt-decode": "^3.0.0-beta.2",
     "lodash": "^4.17.20",
     "react": "^16.12.0",

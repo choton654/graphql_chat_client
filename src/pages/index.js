@@ -1,22 +1,25 @@
-import { gql, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import React from "react"
 import { Card, Grid } from "semantic-ui-react"
+import { GET_USERS } from "../graphql/query"
 
-export const GET_USERS = gql`
-  query {
-    allUsers {
-      id
-      username
-      email
-    }
-  }
-`
-
-const Home = props => {
+const Home = () => {
+  // const data = useStaticQuery(graphql`
+  //   query {
+  //     chat {
+  //       allUsers {
+  //         id
+  //         username
+  //         email
+  //       }
+  //     }
+  //   }
+  // `)
   const { loading, error, data } = useQuery(GET_USERS)
 
   if (loading) return "Loading..."
   if (error) return `Error! ${error.message}`
+
   return (
     <Grid container columns={3}>
       {data.allUsers.map(user => (

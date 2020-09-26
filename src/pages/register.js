@@ -1,18 +1,9 @@
-import { gql, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { navigate } from "gatsby"
 import React, { useState } from "react"
 import { Button, Container, Form, Message } from "semantic-ui-react"
-import { GET_USERS } from "."
-
-const CREATE_USER = gql`
-  mutation createUser($email: String!, $username: String!, $password: String!) {
-    createUser(email: $email, username: $username, password: $password) {
-      id
-      username
-      email
-    }
-  }
-`
+import { CREATE_USER } from "../graphql/mutation"
+import { GET_USERS } from "../graphql/query"
 
 const Register = () => {
   const [user, setUser] = useState({
