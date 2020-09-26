@@ -8,6 +8,7 @@ const App = () => {
     <Router basepath="/app">
       <ViewTeams path="/view-team/" />
       <ViewTeams path="/view-team/:teamId" />
+      <ViewTeams path="/view-team/:teamId/:channelId" />
       <PrivateRoute path="/create-team" component={CreateTeam} />
     </Router>
   )

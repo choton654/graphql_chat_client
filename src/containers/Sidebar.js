@@ -1,33 +1,20 @@
-import { gql, useQuery } from "@apollo/client"
 import decode from "jwt-decode"
-import findIndex from "lodash/findIndex"
-import React from "react"
+import React, { useState } from "react"
 import Channels from "../components/Channels"
+import ModalOpen from "../components/ModalOpen"
 import Teams from "../components/Teams"
 
-export const allTeamsQuery = gql`
-  query {
-    allTeams {
-      id
-      name
-      channels {
-        id
-        name
-      }
-    }
+function Sidebar({ teams, team }) {
+  const [openModal, setopenModal] = useState(false)
+
+  const openChannelModal = () => {
+    setopenModal(true)
   }
-`
 
-function Sidebar({ currentTeamId }) {
-  const { loading, error, data } = useQuery(allTeamsQuery)
+  const closeModal = () => {
+    setopenModal(false)
+  }
 
-  if (loading) return "Loading..."
-  if (error) return `Error! ${error.message}`
-
-  const teamIdx = currentTeamId
-    ? findIndex(data.allTeams, ["id", currentTeamId])
-    : 0
-  const team = data.allTeams[teamIdx]
   let username = ""
   try {
     const token = localStorage.getItem("token")
@@ -36,22 +23,24 @@ function Sidebar({ currentTeamId }) {
   } catch (err) {}
 
   return [
-    <Teams
-      key="team-sidebar"
-      teams={data.allTeams.map(t => ({
-        id: t.id,
-        letter: t.name.charAt(0).toUpperCase(),
-      }))}
-    />,
+    <Teams key="team-sidebar" teams={teams} />,
     <Channels
       key="channels-sidebar"
       teamName={team?.name}
       username={username}
+      teamId={team.id}
       channels={team?.channels}
+      openChannelModal={openChannelModal}
       users={[
         { id: 1, name: "slackbot" },
         { id: 2, name: "user1" },
       ]}
+    />,
+    <ModalOpen
+      key="model-sidebar"
+      teamId={team.id}
+      open={openModal}
+      onClose={closeModal}
     />,
   ]
 }

@@ -1,3 +1,4 @@
+import { Link } from "gatsby"
 import React from "react"
 import styled from "styled-components"
 
@@ -41,7 +42,14 @@ const Green = styled.span`
 `
 const Bubble = ({ on = true }) => (on ? <Green>●</Green> : "○")
 
-function Channels({ teamName, username, channels, users }) {
+function Channels({
+  teamName,
+  username,
+  channels,
+  users,
+  openChannelModal,
+  teamId,
+}) {
   return (
     <ChannelWrapper>
       <PushLeft>
@@ -50,9 +58,14 @@ function Channels({ teamName, username, channels, users }) {
       </PushLeft>
       <div>
         <SideBarList>
-          <SideBarListHeader>Channels</SideBarListHeader>
+          <SideBarListHeader>
+            Channels{" "}
+            <i className="plus circle icon" onClick={openChannelModal}></i>
+          </SideBarListHeader>
           {channels.map(({ id, name }) => (
-            <SideBarListItem key={`channel-${id}`}>#{name}</SideBarListItem>
+            <Link key={`channel-${id}`} to={`/app/view-team/${teamId}/${id}`}>
+              <SideBarListItem>#{name}</SideBarListItem>
+            </Link>
           ))}
         </SideBarList>
       </div>
