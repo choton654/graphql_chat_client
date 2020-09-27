@@ -5,7 +5,7 @@ import { Button, Form, Input, Modal } from "semantic-ui-react"
 import { CREATE_CHANNEL } from "../graphql/mutation"
 import { allTeamsQuery } from "../graphql/query"
 
-function ModalOpen({ open, onClose, teamId }) {
+function AddChannelModal({ open, onClose, teamId }) {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -89,4 +89,4 @@ function ModalOpen({ open, onClose, teamId }) {
   )
 }
 
-export default ModalOpen
+export default AddChannelModal

@@ -49,6 +49,7 @@ function Channels({
   users,
   openChannelModal,
   teamId,
+  oninvitePeopleClick,
 }) {
   return (
     <ChannelWrapper>
@@ -62,7 +63,7 @@ function Channels({
             Channels{" "}
             <i className="plus circle icon" onClick={openChannelModal}></i>
           </SideBarListHeader>
-          {channels.map(({ id, name }) => (
+          {channels?.map(({ id, name }) => (
             <Link key={`channel-${id}`} to={`/app/view-team/${teamId}/${id}`}>
               <SideBarListItem>#{name}</SideBarListItem>
             </Link>
@@ -79,6 +80,11 @@ function Channels({
             </SideBarListItem>
           ))}
         </SideBarList>
+      </div>
+      <div>
+        <a href="#invite-people" onClick={oninvitePeopleClick}>
+          + Invite People
+        </a>
       </div>
     </ChannelWrapper>
   )

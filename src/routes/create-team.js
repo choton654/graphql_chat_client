@@ -1,21 +1,9 @@
-import { gql, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { navigate } from "gatsby"
 import React, { useState } from "react"
 import { Button, Container, Form, Message } from "semantic-ui-react"
-
-const CREATE_TEAM = gql`
-  mutation createTeam($name: String!) {
-    createTeam(name: $name) {
-      ok
-      team {
-        id
-      }
-      error {
-        error
-      }
-    }
-  }
-`
+import { CREATE_TEAM } from "../graphql/mutation"
+import { allTeamsQuery } from "../graphql/query"
 
 const CreateTeam = () => {
   const [team, setTeam] = useState("")
@@ -23,7 +11,13 @@ const CreateTeam = () => {
     ok: false,
     error: "",
   })
-  const [createTeam, { data }] = useMutation(CREATE_TEAM)
+  const [createTeam] = useMutation(CREATE_TEAM, {
+    refetchQueries: [
+      {
+        query: allTeamsQuery,
+      },
+    ],
+  })
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -36,9 +30,10 @@ const CreateTeam = () => {
             ok: true,
             error: res.data.createTeam.error.error,
           })
+        } else {
+          setTeam("")
+          navigate(`/app/view-team/${res.data.createTeam.team.id}`)
         }
-        setTeam("")
-        navigate(`/app/view-team/${res.data.createTeam.team.id}`)
       })
       .catch(err => {
         console.error(err)
