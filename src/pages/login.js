@@ -1,18 +1,9 @@
-import { gql, useApolloClient } from "@apollo/client"
+import { useApolloClient } from "@apollo/client"
 import { navigate } from "gatsby"
 import React, { useState } from "react"
 import { Button, Container, Form, Message } from "semantic-ui-react"
-const USER_LOGIN = gql`
-  mutation loginUser($email: String!, $password: String!) {
-    loginUser(email: $email, password: $password) {
-      errors {
-        error
-      }
-      token
-      refreshToken
-    }
-  }
-`
+import { USER_LOGIN } from "../graphql/mutation"
+import { allTeamsQuery } from "../graphql/query"
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -37,6 +28,11 @@ const Login = () => {
       .mutate({
         variables: { email: user.email, password: user.password },
         mutation: USER_LOGIN,
+        refetchQueries: [
+          {
+            query: allTeamsQuery,
+          },
+        ],
       })
       .then(data => {
         if (data.data.loginUser?.errors !== null) {
@@ -49,7 +45,7 @@ const Login = () => {
         } else {
           localStorage.setItem("token", data.data.loginUser.token)
           localStorage.setItem("refreshToken", data.data.loginUser.refreshToken)
-          navigate("/")
+          navigate("/app/view-team")
           setUser({
             email: "",
             password: "",

@@ -10,19 +10,19 @@ function Sidebar({ teams, team }) {
   const [openInvitePeopleModal, setopenInvitePeopleModal] = useState(false)
 
   const toggleChannelModal = e => {
-    e.preventDefault()
     setopenModal(() => !openModal)
   }
   const toggleInvitePeopleModal = e => {
-    e.preventDefault()
     setopenInvitePeopleModal(() => !openInvitePeopleModal)
   }
 
   let username = ""
+  let isOwner = false
   try {
     const token = localStorage.getItem("token")
-    const { username: uname } = decode(token)
+    const { username: uname, id } = decode(token)
     username = uname
+    isOwner = id === team.owner
   } catch (err) {}
 
   return [
@@ -32,6 +32,7 @@ function Sidebar({ teams, team }) {
       teamName={team?.name}
       username={username}
       teamId={team?.id}
+      isOwner={isOwner}
       channels={team?.channels}
       openChannelModal={toggleChannelModal}
       oninvitePeopleClick={toggleInvitePeopleModal}

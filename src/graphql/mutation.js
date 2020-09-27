@@ -25,6 +25,17 @@ export const CREATE_TEAM = gql`
     }
   }
 `
+export const USER_LOGIN = gql`
+  mutation loginUser($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password) {
+      errors {
+        error
+      }
+      token
+      refreshToken
+    }
+  }
+`
 
 export const CREATE_USER = gql`
   mutation createUser($email: String!, $username: String!, $password: String!) {
@@ -43,5 +54,11 @@ export const addTeamMemberMutation = gql`
         error
       }
     }
+  }
+`
+
+export const createMessageMutation = gql`
+  mutation($channelId: ID!, $text: String!) {
+    createMessage(channelId: $channelId, text: $text)
   }
 `

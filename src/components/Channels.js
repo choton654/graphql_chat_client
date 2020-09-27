@@ -50,6 +50,7 @@ function Channels({
   openChannelModal,
   teamId,
   oninvitePeopleClick,
+  isOwner,
 }) {
   return (
     <ChannelWrapper>
@@ -61,7 +62,9 @@ function Channels({
         <SideBarList>
           <SideBarListHeader>
             Channels{" "}
-            <i className="plus circle icon" onClick={openChannelModal}></i>
+            {isOwner && (
+              <i className="plus circle icon" onClick={openChannelModal} />
+            )}
           </SideBarListHeader>
           {channels?.map(({ id, name }) => (
             <Link key={`channel-${id}`} to={`/app/view-team/${teamId}/${id}`}>
@@ -81,11 +84,13 @@ function Channels({
           ))}
         </SideBarList>
       </div>
-      <div>
-        <a href="#invite-people" onClick={oninvitePeopleClick}>
-          + Invite People
-        </a>
-      </div>
+      {isOwner && (
+        <div>
+          <a href="#invite-people" onClick={oninvitePeopleClick}>
+            + Invite People
+          </a>
+        </div>
+      )}
     </ChannelWrapper>
   )
 }

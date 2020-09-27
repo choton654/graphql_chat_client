@@ -5,6 +5,7 @@ export const allTeamsQuery = gql`
     allTeams {
       id
       name
+      owner
       channels {
         id
         name
@@ -13,6 +14,7 @@ export const allTeamsQuery = gql`
     inviteTeams {
       id
       name
+      owner
       channels {
         id
         name
@@ -20,13 +22,24 @@ export const allTeamsQuery = gql`
     }
   }
 `
-
 export const GET_USERS = gql`
   query {
     allUsers {
       id
       username
       email
+    }
+  }
+`
+export const messagesQuery = gql`
+  query($channelId: ID!) {
+    messages(channelId: $channelId) {
+      id
+      text
+      user {
+        username
+      }
+      createdAt
     }
   }
 `
