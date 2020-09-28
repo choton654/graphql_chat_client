@@ -36,10 +36,10 @@ export const messagesQuery = gql`
     messages(channelId: $channelId) {
       id
       text
+      createdAt
       user {
         username
       }
-      createdAt
     }
   }
 `

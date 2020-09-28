@@ -11,7 +11,7 @@ import SendMessage from "./SendMessage"
 
 function ViewTeams({ teamId, channelId }) {
   const { loading, error, data } = useQuery(allTeamsQuery)
-  console.log(data)
+  // console.log(data)
   if (loading) return "Loading..."
   if (error) return `Error! ${error.message}`
 
@@ -52,7 +52,10 @@ function ViewTeams({ teamId, channelId }) {
       {channel && <Header channelName={channel?.name || ""} />}
       {channel && <MessageContainer channelId={channel?.id} />}
       {channel && (
-        <SendMessage channelName={channel?.name || ""} channelId={channel.id} />
+        <SendMessage
+          channelName={channel?.name || ""}
+          channelId={channel?.id}
+        />
       )}
     </AppLayout>
   )

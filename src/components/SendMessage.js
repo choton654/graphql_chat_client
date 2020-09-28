@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client"
 import { useFormik } from "formik"
 import React from "react"
 import { Input } from "semantic-ui-react"
@@ -17,21 +18,23 @@ function SendMessage({ channelName, channelId }) {
     },
     onSubmit: values => {
       console.log(values)
-      console.log(channelId)
-      createMessageMutation({
+      createMessage({
         variables: {
           text: values.message,
-          channelId,
+          channelId: channelId,
         },
       })
         .then(res => {
           console.log(res)
+          formik.initialValues.message = ""
         })
         .catch(err => console.error(err.message))
     },
   })
 
   const ENTER_KEY = 13
+
+  const [createMessage] = useMutation(createMessageMutation)
 
   return (
     <SendMessageWrapper>
