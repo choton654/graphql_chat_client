@@ -9,8 +9,14 @@ const PrivateRoute = ({ component: Component, location, ...rest }) => {
     try {
       decode(token)
       decode(refreshToken)
+      // const currentTime = Date.now() / 1000
+      // const decode = jwt_decode(token)
+      // if (decode.exp < currentTime) {
+      //   token = null
+      // }
       return true
     } catch (err) {
+      window.location.hash = "app/login"
       return false
     }
   }

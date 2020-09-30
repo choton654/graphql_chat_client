@@ -20,9 +20,9 @@ function Sidebar({ teams, team }) {
   let isOwner = false
   try {
     const token = localStorage.getItem("token")
-    const { username: uname, id } = decode(token)
-    username = uname
-    isOwner = id === team.owner
+    const { user } = decode(token)
+    username = user.username
+    isOwner = user._id === team.owner
   } catch (err) {}
 
   return [

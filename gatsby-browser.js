@@ -1,5 +1,6 @@
 import {
   ApolloClient,
+  ApolloLink,
   ApolloProvider,
   createHttpLink,
   InMemoryCache,
@@ -16,22 +17,55 @@ const httpLink = createHttpLink({
   uri: "http://localhost:3000/graphql",
 })
 
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      token: localStorage.getItem("token") || null,
-      refreshToken: localStorage.getItem("refreshToken") || null,
-    },
+// const authLink = setContext((_, { headers }) => {
+//   return {
+//     headers: {
+//       ...headers,
+//       token: localStorage.getItem("token") || null,
+//       refreshToken: localStorage.getItem("refreshToken") || null,
+//     },
+//   }
+// })
+// const httpLinkWithMiddleware = authLink.concat(httpLink)
+
+const middlewareLink = setContext(() => ({
+  headers: {
+    "x-token": localStorage.getItem("token"),
+    "x-refresh-token": localStorage.getItem("refreshToken"),
+  },
+}))
+
+const afterwareLink = new ApolloLink((operation, forward) => {
+  const { headers } = operation.getContext()
+
+  if (headers) {
+    const token = headers.get("x-token")
+    const refreshToken = headers.get("x-refresh-token")
+
+    if (token) {
+      localStorage.setItem("token", token)
+    }
+
+    if (refreshToken) {
+      localStorage.setItem("refreshToken", refreshToken)
+    }
   }
+
+  return forward(operation)
 })
 
-const httpLinkWithMiddleware = authLink.concat(httpLink)
+const httpLinkWithMiddleware = afterwareLink.concat(
+  middlewareLink.concat(httpLink)
+)
 
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:3000/graphql`,
   options: {
     reconnect: true,
+    connectionParams: {
+      token: localStorage.getItem("token"),
+      refreshToken: localStorage.getItem("refreshToken"),
+    },
   },
 })
 

@@ -2,32 +2,36 @@ import { useQuery } from "@apollo/client"
 import { navigate } from "gatsby"
 import findIndex from "lodash/findIndex"
 import React from "react"
+import AppLayout from "../components/AppLayout"
+import Header from "../components/Header"
+import SendMessage from "../components/SendMessage"
 import MessageContainer from "../containers/MessageContainer"
 import Sidebar from "../containers/Sidebar"
 import { allTeamsQuery } from "../graphql/query"
-import AppLayout from "./AppLayout"
-import Header from "./Header"
-import SendMessage from "./SendMessage"
 
 function ViewTeams({ teamId, channelId }) {
-  const { loading, error, data } = useQuery(allTeamsQuery)
-  // console.log(data)
+  const { loading, error, data } = useQuery(allTeamsQuery, {
+    fetchPolicy: "network-only",
+  })
   if (loading) return "Loading..."
-  if (error) return `Error! ${error.message}`
+  // if (error) return `Error! ${error.message}`
+  if (error) {
+    navigate("/login")
+  }
 
   let teams
-  if (data.inviteTeams?.length > 0 && data.allTeams.length > 0) {
+  if (data?.inviteTeams.length > 0 && data.allTeams.length > 0) {
     teams = [...data.allTeams, ...data.inviteTeams]
-  } else if (data.allTeams.length > 0) {
+  } else if (data?.allTeams.length > 0) {
     teams = [...data.allTeams]
-  } else if (data.inviteTeams?.length > 0) {
+  } else if (data?.inviteTeams?.length > 0) {
     teams = [...data.inviteTeams]
   } else {
     teams = []
   }
   console.log(teams)
 
-  if (!teams?.length) {
+  if (!error && !teams?.length) {
     navigate("/app/create-team")
   }
 

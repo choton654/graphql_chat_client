@@ -4,19 +4,8 @@ import { Card, Grid } from "semantic-ui-react"
 import { GET_USERS } from "../graphql/query"
 
 const Home = () => {
-  // const data = useStaticQuery(graphql`
-  //   query {
-  //     chat {
-  //       allUsers {
-  //         id
-  //         username
-  //         email
-  //       }
-  //     }
-  //   }
-  // `)
   const { loading, error, data } = useQuery(GET_USERS)
-  console.log(data)
+  // console.log(data)
   if (loading) return "Loading..."
   if (error) return `Error! ${error.message}`
 

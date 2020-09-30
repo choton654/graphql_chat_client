@@ -1,17 +1,43 @@
 import { useQuery } from "@apollo/client"
-import React from "react"
+import React, {useEffect, useState} from "react"
 import { Comment } from "semantic-ui-react"
 import Messages from "../components/Messages"
-import { messagesQuery } from "../graphql/query"
+import { messagesQuery, newChannelMessageSubscription } from "../graphql/query"
 
 function MessageContainer({ channelId }) {
-  const { loading, error, data } = useQuery(messagesQuery, {
+  const { loading, error, data, subscribeToMore } = useQuery(messagesQuery, {
     variables: { channelId },
+    fetchPolicy: "network-only",
+
   })
-  // console.log(data)
+
+  const suscribe = channelId =>
+    subscribeToMore({
+      document: newChannelMessageSubscription,
+      variables: { channelId },
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log(prev, subscriptionData)
+        if (!subscriptionData.data) return prev
+        return {
+          ...prev,
+          messages: [...prev.messages, subscriptionData.data.newMessage],
+        }
+      },
+      onError: err => console.error(err.message),
+    })
+
+  let unSuscribe
+  useEffect(() => {
+    if (channelId) {
+      unSuscribe = suscribe(channelId)
+    }
+    return () => {
+      unSuscribe()
+    }
+  }, [channelId])
+
   if (loading) return "Loading..."
   if (error) return `Error! ${error.message}`
-
   return (
     <>
       <Messages>

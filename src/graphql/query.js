@@ -22,6 +22,24 @@ export const allTeamsQuery = gql`
     }
   }
 `
+export const meQuery = gql`
+  {
+    me {
+      id
+      username
+      teams {
+        id
+        name
+        admin
+        channels {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
 export const GET_USERS = gql`
   query {
     allUsers {
@@ -40,6 +58,18 @@ export const messagesQuery = gql`
       user {
         username
       }
+    }
+  }
+`
+export const newChannelMessageSubscription = gql`
+  subscription($channelId: ID!) {
+    newMessage(channelId: $channelId) {
+      id
+      text
+      user {
+        username
+      }
+      createdAt
     }
   }
 `
