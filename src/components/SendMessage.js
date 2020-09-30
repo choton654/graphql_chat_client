@@ -1,9 +1,7 @@
-import { useMutation } from "@apollo/client"
 import { useFormik } from "formik"
 import React from "react"
 import { Input } from "semantic-ui-react"
 import styled from "styled-components"
-import { createMessageMutation } from "../graphql/mutation"
 
 const SendMessageWrapper = styled.div`
   grid-column: 3;
@@ -11,30 +9,31 @@ const SendMessageWrapper = styled.div`
   margin: 20px;
 `
 
-function SendMessage({ channelName, channelId }) {
+function SendMessage({ placeholder, channelId, msgSubmit }) {
   const formik = useFormik({
     initialValues: {
       message: "",
     },
     onSubmit: values => {
       console.log(values)
-      createMessage({
-        variables: {
-          text: values.message,
-          channelId: channelId,
-        },
-      })
-        .then(res => {
-          console.log(res)
-          formik.initialValues.message = ""
-        })
-        .catch(err => console.error(err.message))
+      msgSubmit(values.message)
+      formik.initialValues.message = ""
+      // createMessage({
+      //   variables: {
+      //     text: values.message,
+      //     channelId: channelId,
+      //   },
+      // })
+      // .then(res => {
+      //   console.log(res)
+      // })
+      // .catch(err => console.error(err.message))
     },
   })
 
   const ENTER_KEY = 13
 
-  const [createMessage] = useMutation(createMessageMutation)
+  // const [createMessage] = useMutation(createMessageMutation)
 
   return (
     <SendMessageWrapper>
@@ -49,7 +48,7 @@ function SendMessage({ channelName, channelId }) {
         onBlur={formik.handleBlur}
         name="message"
         value={formik.values.message}
-        placeholder={`Message #${channelName}`}
+        placeholder={`Message #${placeholder}`}
       />
     </SendMessageWrapper>
   )

@@ -1,11 +1,10 @@
-import decode from "jwt-decode"
 import React, { useState } from "react"
 import AddChannelModal from "../components/AddChannelModal"
 import Channels from "../components/Channels"
 import InvitePeopleModal from "../components/InvitePeopleModal"
 import Teams from "../components/Teams"
 
-function Sidebar({ teams, team }) {
+function Sidebar({ teams, team, username }) {
   const [openModal, setopenModal] = useState(false)
   const [openInvitePeopleModal, setopenInvitePeopleModal] = useState(false)
 
@@ -16,14 +15,14 @@ function Sidebar({ teams, team }) {
     setopenInvitePeopleModal(() => !openInvitePeopleModal)
   }
 
-  let username = ""
-  let isOwner = false
-  try {
-    const token = localStorage.getItem("token")
-    const { user } = decode(token)
-    username = user.username
-    isOwner = user._id === team.owner
-  } catch (err) {}
+  // let username = ""
+  // let isOwner = false
+  // try {
+  //   const token = localStorage.getItem("token")
+  //   const { user } = decode(token)
+  //   username = user.username
+  //   isOwner = user._id === team.owner
+  // } catch (err) {}
 
   return [
     <Teams key="team-sidebar" teams={teams} />,
@@ -32,7 +31,7 @@ function Sidebar({ teams, team }) {
       teamName={team?.name}
       username={username}
       teamId={team?.id}
-      isOwner={isOwner}
+      isOwner={team.admin}
       channels={team?.channels}
       openChannelModal={toggleChannelModal}
       oninvitePeopleClick={toggleInvitePeopleModal}
