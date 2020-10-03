@@ -62,3 +62,8 @@ export const createMessageMutation = gql`
     createMessage(channelId: $channelId, text: $text)
   }
 `
+export const createDirectMessageMutation = gql`
+  mutation($receiverId: ID!, $text: String!, $teamId: ID!) {
+    createDirectMessage(receiverId: $receiverId, text: $text, teamId: $teamId)
+  }
+`

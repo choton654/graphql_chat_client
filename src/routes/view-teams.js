@@ -16,21 +16,17 @@ function ViewTeams({ teamId, channelId }) {
   })
   const client = useApolloClient()
   if (loading) return "Loading..."
-  // if (error) return `Error! ${error.message}`
-  if (error) {
-    navigate("/login")
-  }
+  if (error) return `Error! ${error.message}`
+  // if (error.message === "Not authenticated") {
+  //   navigate("/login")
+  // }
 
-  const { username, teams } = data?.me
-
-  console.log(teams)
-
-  if (!error && !teams?.length) {
+  if (!error && !data.me.teams.length) {
     navigate("/app/create-team")
   }
 
-  const teamIdx = teamId ? findIndex(teams, ["id", teamId]) : 0
-  const team = teamIdx === -1 ? teams[0] : teams[teamIdx]
+  const teamIdx = teamId ? findIndex(data.me.teams, ["id", teamId]) : 0
+  const team = teamIdx === -1 ? data.me.teams[0] : data.me.teams[teamIdx]
 
   const channelIdx = channelId
     ? findIndex(team?.channels, ["id", channelId])
@@ -41,20 +37,20 @@ function ViewTeams({ teamId, channelId }) {
   return (
     <AppLayout>
       <Sidebar
-        teams={teams.map(t => ({
+        teams={data.me.teams.map(t => ({
           id: t.id,
           letter: t.name.charAt(0).toUpperCase(),
         }))}
         team={team}
-        username={username}
+        username={data.me.username}
       />
       {channel && <Header channelName={channel?.name || ""} />}
       {channel && <MessageContainer channelId={channel?.id} />}
       {channel && (
         <SendMessage
           placeholder={channel?.name || ""}
-          msgSubmit={text => {
-            client.mutate({
+          msgSubmit={async text => {
+            await client.mutate({
               variables: { text, channelId: channel.id },
               mutation: createMessageMutation,
             })
@@ -66,14 +62,3 @@ function ViewTeams({ teamId, channelId }) {
 }
 
 export default ViewTeams
-
-// let teams
-// if (data?.inviteTeams.length > 0 && data.allTeams.length > 0) {
-//   teams = [...data.allTeams, ...data.inviteTeams]
-// } else if (data?.allTeams.length > 0) {
-//   teams = [...data.allTeams]
-// } else if (data?.inviteTeams?.length > 0) {
-//   teams = [...data.inviteTeams]
-// } else {
-//   teams = []
-// }

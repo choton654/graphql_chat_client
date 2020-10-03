@@ -30,7 +30,7 @@ export const meQuery = gql`
       teams {
         id
         name
-        admin
+        owner
         channels {
           id
           name
@@ -70,6 +70,26 @@ export const newChannelMessageSubscription = gql`
         username
       }
       createdAt
+    }
+  }
+`
+export const directMessagesQuery = gql`
+  query($teamId: ID!, $userId: ID!) {
+    directMessages(teamId: $teamId, receiverId: $userId) {
+      id
+      sender {
+        username
+      }
+      text
+      createdAt
+    }
+  }
+`
+export const getTeamMembersQuery = gql`
+  query($teamId: ID!) {
+    getTeamMembers(teamId: $teamId) {
+      id
+      username
     }
   }
 `

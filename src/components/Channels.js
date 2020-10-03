@@ -1,5 +1,6 @@
 import { Link } from "gatsby"
 import React from "react"
+import { Icon } from "semantic-ui-react"
 import styled from "styled-components"
 
 const ChannelWrapper = styled.div`
@@ -51,6 +52,7 @@ function Channels({
   teamId,
   oninvitePeopleClick,
   isOwner,
+  onDirectMessageClick
 }) {
   return (
     <ChannelWrapper>
@@ -75,7 +77,7 @@ function Channels({
       </div>
       <div>
         <SideBarList>
-          <SideBarListHeader>Direct Messages</SideBarListHeader>
+          <SideBarListHeader>Direct Messages <Icon onClick={onDirectMessageClick} name="add circle" /></SideBarListHeader>
           {users.map(({ id, name }) => (
             <SideBarListItem key={`user-${id}`}>
               <Bubble />

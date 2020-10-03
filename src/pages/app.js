@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Router basepath="/app">
       <PrivateRoute
-        path="/view-team/:teamId/:userId"
+        path="/view-team/:teamId/user/:userId"
         component={DirectMessage}
       />
       <PrivateRoute path="/view-team/" component={ViewTeams} />
