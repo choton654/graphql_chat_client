@@ -2,6 +2,7 @@ import { Link } from "gatsby"
 import React from "react"
 import { Icon } from "semantic-ui-react"
 import styled from "styled-components"
+import decode from "jwt-decode"
 
 const ChannelWrapper = styled.div`
   grid-column: 2;
@@ -52,7 +53,7 @@ function Channels({
   teamId,
   oninvitePeopleClick,
   isOwner,
-  onDirectMessageClick
+  onDirectMessageClick,
 }) {
   return (
     <ChannelWrapper>
@@ -77,13 +78,20 @@ function Channels({
       </div>
       <div>
         <SideBarList>
-          <SideBarListHeader>Direct Messages <Icon onClick={onDirectMessageClick} name="add circle" /></SideBarListHeader>
-          {users.map(({ id, name }) => (
-            <SideBarListItem key={`user-${id}`}>
-              <Bubble />
-              {name}
-            </SideBarListItem>
-          ))}
+          <SideBarListHeader>
+            Direct Messages{" "}
+            <Icon onClick={onDirectMessageClick} name="add circle" />
+          </SideBarListHeader>
+          {users.map(({ id, username }) => {
+            return (
+              <SideBarListItem key={`user-${id}`}>
+                <Bubble />
+                <Link to={`/app/view-team/${teamId}/user/${id}`}>
+                  {username}
+                </Link>
+              </SideBarListItem>
+            )
+          })}
         </SideBarList>
       </div>
       {isOwner && (
