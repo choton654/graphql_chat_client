@@ -1,8 +1,18 @@
 import { gql } from "@apollo/client"
 
 export const CREATE_CHANNEL = gql`
-  mutation createChannel($teamId: ID!, $name: String!) {
-    createChannel(teamId: $teamId, name: $name) {
+  mutation createChannel(
+    $teamId: ID!
+    $name: String!
+    $public: Boolean
+    $members: [ID!]
+  ) {
+    createChannel(
+      teamId: $teamId
+      name: $name
+      public: $public
+      members: $members
+    ) {
       ok
       channel {
         id

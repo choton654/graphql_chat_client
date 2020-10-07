@@ -8,8 +8,8 @@ const SendMessageWrapper = styled.div`
   grid-column: 3;
   padding: 20px;
   grid-row: 3;
-  display: grid;
-  grid-template-columns: 3% auto;
+  ${"" /* display: grid;
+  grid-template-columns: 3% auto; */}
 `
 
 function SendMessage({ placeholder, channelId, msgSubmit }) {

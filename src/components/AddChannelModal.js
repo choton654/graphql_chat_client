@@ -1,14 +1,17 @@
 import { useMutation } from "@apollo/client"
 import { useFormik } from "formik"
 import React from "react"
-import { Button, Form, Input, Modal } from "semantic-ui-react"
+import { Button, Checkbox, Form, Input, Modal } from "semantic-ui-react"
 import { CREATE_CHANNEL } from "../graphql/mutation"
 import { allTeamsQuery } from "../graphql/query"
+import MultiSelectUsers from "./MultiSelectUsers"
 
 function AddChannelModal({ open, onClose, teamId }) {
   const formik = useFormik({
     initialValues: {
       name: "",
+      public: true,
+      members: [],
     },
     onSubmit: values => {
       console.log(values)
@@ -28,6 +31,8 @@ function AddChannelModal({ open, onClose, teamId }) {
         variables: {
           teamId,
           name: values.name,
+          public: values.public,
+          members: values.members,
         },
       })
         .then(res => {
@@ -77,6 +82,30 @@ function AddChannelModal({ open, onClose, teamId }) {
               onChange={formik.handleChange}
             />
           </Form.Field>
+          <Form.Field>
+            <Checkbox
+              toggle
+              label="Private"
+              value={!formik.values.public}
+              onChange={(e, { checked }) => {
+                console.log(checked)
+                formik.setFieldValue("public", !checked)
+              }}
+            />
+          </Form.Field>
+          {formik.values.public ? null : (
+            <Form.Field>
+              <MultiSelectUsers
+                value={formik.values.members}
+                handleChange={(e, { value }) => {
+                  console.log(value)
+                  formik.setFieldValue("members", value)
+                }}
+                teamId={teamId}
+                placeholder="select members to invite"
+              />
+            </Form.Field>
+          )}
           <Form.Group widths="equal">
             <Button fluid onClick={onClose}>
               Cancel
