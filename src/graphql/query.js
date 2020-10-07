@@ -44,6 +44,31 @@ export const meQuery = gql`
   }
 `
 
+export const directMessageMeQuery = gql`
+  query($userId: ID!) {
+    getUser(userId: $userId) {
+      username
+    }
+    me {
+      id
+      username
+      teams {
+        id
+        name
+        owner
+        directMessageMembers {
+          id
+          username
+        }
+        channels {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
 export const GET_USERS = gql`
   query {
     allUsers {
@@ -77,6 +102,20 @@ export const newChannelMessageSubscription = gql`
     }
   }
 `
+
+export const newDirectMessageSubscription = gql`
+  subscription($teamId: ID!, $userId: ID!) {
+    newDirectMessage(teamId: $teamId, userId: $userId) {
+      id
+      sender {
+        username
+      }
+      text
+      createdAt
+    }
+  }
+`
+
 export const directMessagesQuery = gql`
   query($teamId: ID!, $userId: ID!) {
     directMessages(teamId: $teamId, receiverId: $userId) {

@@ -3,7 +3,7 @@ import { navigate } from "gatsby"
 import React, { useState } from "react"
 import { Button, Container, Form, Message } from "semantic-ui-react"
 import { CREATE_TEAM } from "../graphql/mutation"
-import { allTeamsQuery } from "../graphql/query"
+import { allTeamsQuery, meQuery } from "../graphql/query"
 
 const CreateTeam = () => {
   const [team, setTeam] = useState("")
@@ -14,7 +14,7 @@ const CreateTeam = () => {
   const [createTeam] = useMutation(CREATE_TEAM, {
     refetchQueries: [
       {
-        query: allTeamsQuery,
+        query: meQuery,
       },
     ],
   })

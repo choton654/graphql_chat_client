@@ -7,10 +7,11 @@ import SendMessage from "../components/SendMessage"
 import DirectMessageContainer from "../containers/DirectMessageContainer"
 import Sidebar from "../containers/Sidebar"
 import { createDirectMessageMutation } from "../graphql/mutation"
-import { meQuery } from "../graphql/query"
+import { directMessageMeQuery, meQuery } from "../graphql/query"
 
 function DirectMessage({ teamId, userId }) {
-  const { loading, error, data } = useQuery(meQuery, {
+  const { loading, error, data } = useQuery(directMessageMeQuery, {
+    variables: { userId },
     fetchPolicy: "network-only",
   })
 
@@ -30,16 +31,33 @@ function DirectMessage({ teamId, userId }) {
           letter: t.name.charAt(0).toUpperCase(),
         }))}
         team={team}
+        username={data.me.username}
       />
-      <Header channelName="Someones-Username" />
+      <Header channelName={data.getUser.username} />
       <DirectMessageContainer teamId={teamId} userId={userId} />
       <SendMessage
         msgSubmit={async text => {
           const res = await client.mutate({
             mutation: createDirectMessageMutation,
             variables: { text, receiverId: userId, teamId },
+            optimisticResponse: {},
+            update: store => {
+              const data1 = store.readQuery({ query: meQuery })
+              console.log("data1", data1)
+              const teamIdx2 = findIndex(data1.me.teams, ["id", team.id])
+              const notAlreadyThere = data1.me.teams[
+                teamIdx2
+              ].directMessageMembers.every(member => member.id !== userId)
+              if (notAlreadyThere) {
+                data1.me.teams[teamIdx2].directMessageMembers.push({
+                  __typename: "User",
+                  id: userId,
+                  username: data.getUser.username,
+                })
+              }
+              store.writeQuery({ query: meQuery, data: data1 })
+            },
           })
-          console.log(res)
         }}
         placeholder={userId}
       />

@@ -1,12 +1,15 @@
 import { useFormik } from "formik"
 import React from "react"
-import { Input } from "semantic-ui-react"
+import { Button, Input } from "semantic-ui-react"
 import styled from "styled-components"
+import FileUpload from "./FileUploads"
 
 const SendMessageWrapper = styled.div`
   grid-column: 3;
+  padding: 20px;
   grid-row: 3;
-  margin: 20px;
+  display: grid;
+  grid-template-columns: 3% auto;
 `
 
 function SendMessage({ placeholder, channelId, msgSubmit }) {
@@ -15,28 +18,16 @@ function SendMessage({ placeholder, channelId, msgSubmit }) {
       message: "",
     },
     onSubmit: values => {
-      console.log(values)
       msgSubmit(values.message)
-      formik.initialValues.message = ""
-      // createMessage({
-      //   variables: {
-      //     text: values.message,
-      //     channelId: channelId,
-      //   },
-      // })
-      // .then(res => {
-      //   console.log(res)
-      // })
-      // .catch(err => console.error(err.message))
+      formik.resetForm({ message: "" })
     },
   })
 
   const ENTER_KEY = 13
 
-  // const [createMessage] = useMutation(createMessageMutation)
-
   return (
     <SendMessageWrapper>
+      {/* <FileUpload channelId={channelId} /> */}
       <Input
         fluid
         onKeyDown={e => {

@@ -30,6 +30,7 @@ function InvitePeopleModal({ open, onClose, teamId }) {
           } else {
             onClose()
           }
+          formik.resetForm({ email: "" })
         })
         .catch(err => console.error(err.message))
     },
@@ -56,7 +57,9 @@ function InvitePeopleModal({ open, onClose, teamId }) {
             <Button fluid onClick={onClose}>
               Cancel
             </Button>
-            <Button fluid>Add People</Button>
+            <Button fluid type="submit">
+              Add People
+            </Button>
           </Form.Group>
         </Form>
       </Modal.Content>

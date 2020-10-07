@@ -13,15 +13,7 @@ const Home = () => {
     <Grid container columns={3}>
       {data.allUsers.map(user => (
         <Grid.Column key={user.id}>
-          <Card
-            color="olive"
-            header={user.username}
-            meta={user.email}
-            description={[
-              "Rick is a genius scientist whose alcoholism and reckless,",
-              " nihilistic behavior are a source of concern for his family.",
-            ].join("")}
-          />
+          <Card color="olive" header={user.username} meta={user.email} />
         </Grid.Column>
       ))}
     </Grid>

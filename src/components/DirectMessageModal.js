@@ -21,7 +21,9 @@ const DirectMessageModal = ({ open, onClose, teamId }) => {
           <Form.Field>
             <Downshift
               onChange={selectedUser => {
-                window.location.replace(`${teamId}/user/${selectedUser.id}`)
+                window.location.replace(
+                  `/app/view-team/${teamId}/user/${selectedUser.id}`
+                )
                 onClose()
               }}
             >

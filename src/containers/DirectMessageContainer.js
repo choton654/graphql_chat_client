@@ -1,8 +1,11 @@
 import { useQuery } from "@apollo/client"
-import React from "react"
+import React, { useEffect } from "react"
 import { Comment } from "semantic-ui-react"
 import Messages from "../components/Messages"
-import { directMessagesQuery } from "../graphql/query"
+import {
+  directMessagesQuery,
+  newDirectMessageSubscription,
+} from "../graphql/query"
 
 function DirectMessageContainer({ teamId, userId }) {
   const { loading, error, data, subscribeToMore } = useQuery(
@@ -13,30 +16,33 @@ function DirectMessageContainer({ teamId, userId }) {
     }
   )
 
-  // const suscribe = channelId =>
-  //   subscribeToMore({
-  //     document: newChannelMessageSubscription,
-  //     variables: { channelId },
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       console.log(prev, subscriptionData)
-  //       if (!subscriptionData.data) return prev
-  //       return {
-  //         ...prev,
-  //         messages: [...prev.messages, subscriptionData.data.newMessage],
-  //       }
-  //     },
-  //     onError: err => console.error(err.message),
-  //   })
+  const suscribe = (teamId, userId) =>
+    subscribeToMore({
+      document: newDirectMessageSubscription,
+      variables: { teamId, userId },
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log("prev", prev, subscriptionData)
+        if (!subscriptionData.data) return prev
+        return {
+          ...prev,
+          directMessages: [
+            ...prev.directMessages,
+            subscriptionData.data.newDirectMessage,
+          ],
+        }
+      },
+      onError: err => console.error(err.message),
+    })
 
-  // let unSuscribe
-  // useEffect(() => {
-  //   if (channelId) {
-  //     unSuscribe = suscribe(channelId)
-  //   }
-  //   return () => {
-  //     unSuscribe()
-  //   }
-  // }, [channelId])
+  let unSuscribe
+  useEffect(() => {
+    if (teamId && userId) {
+      unSuscribe = suscribe(teamId, userId)
+    }
+    return () => {
+      unSuscribe()
+    }
+  }, [teamId, userId])
 
   if (loading) return "Loading..."
   if (error) return `Error! ${error.message}`

@@ -82,7 +82,7 @@ function Channels({
             Direct Messages{" "}
             <Icon onClick={onDirectMessageClick} name="add circle" />
           </SideBarListHeader>
-          {users.map(({ id, username }) => {
+          {users?.map(({ id, username }) => {
             return (
               <SideBarListItem key={`user-${id}`}>
                 <Bubble />

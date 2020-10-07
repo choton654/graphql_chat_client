@@ -9,11 +9,13 @@ import {
 import { setContext } from "@apollo/client/link/context"
 import { WebSocketLink } from "@apollo/client/link/ws"
 import { getMainDefinition } from "@apollo/client/utilities"
+// import { createUploadLink } from "apollo-upload-client"
 import React from "react"
+import createFileLink from "./src/createFileLink"
 import "semantic-ui-css/semantic.min.css"
 import Layout from "./src/components/layout"
 
-const httpLink = createHttpLink({
+const httpLink = createFileLink({
   uri: "http://localhost:3000/graphql",
 })
 

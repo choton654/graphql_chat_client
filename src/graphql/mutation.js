@@ -58,8 +58,16 @@ export const addTeamMemberMutation = gql`
 `
 
 export const createMessageMutation = gql`
-  mutation($channelId: ID!, $text: String!) {
-    createMessage(channelId: $channelId, text: $text)
+  mutation($channelId: ID!, $text: String, $file: Upload) {
+    createMessage(channelId: $channelId, text: $text, file: $file)
+  }
+`
+
+export const SingleUpload = gql`
+  mutation($file: Upload!) {
+    singleUpload(file: $file) {
+      url
+    }
   }
 `
 export const createDirectMessageMutation = gql`

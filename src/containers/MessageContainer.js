@@ -1,14 +1,15 @@
 import { useQuery } from "@apollo/client"
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import { Comment } from "semantic-ui-react"
+import FileUpload from "../components/FileUploads"
 import Messages from "../components/Messages"
 import { messagesQuery, newChannelMessageSubscription } from "../graphql/query"
 
 function MessageContainer({ channelId }) {
   const { loading, error, data, subscribeToMore } = useQuery(messagesQuery, {
+    onError: err => console.error(err),
     variables: { channelId },
     fetchPolicy: "network-only",
-
   })
 
   const suscribe = channelId =>

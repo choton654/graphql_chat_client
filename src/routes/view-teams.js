@@ -34,7 +34,7 @@ function ViewTeams({ teamId, channelId }) {
   const channel =
     channelIdx === -1 ? team?.channels[0] : team?.channels[channelIdx]
 
-  console.log(team.directMessageMembers)
+  // console.log(team.directMessageMembers)
 
   return (
     <AppLayout>
@@ -50,6 +50,7 @@ function ViewTeams({ teamId, channelId }) {
       {channel && <MessageContainer channelId={channel?.id} />}
       {channel && (
         <SendMessage
+          channelId={channel?.id}
           placeholder={channel?.name || ""}
           msgSubmit={async text => {
             await client.mutate({
