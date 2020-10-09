@@ -3,7 +3,13 @@ import React from "react"
 import { Dropdown } from "semantic-ui-react"
 import { getTeamMembersQuery } from "../graphql/query"
 
-function MultiSelectUsers({ teamId, value, handleChange, placeholder }) {
+function MultiSelectUsers({
+  teamId,
+  value,
+  handleChange,
+  placeholder,
+  currentUserId,
+}) {
   const { loading, error, data } = useQuery(getTeamMembersQuery, {
     variables: { teamId },
   })
@@ -18,11 +24,13 @@ function MultiSelectUsers({ teamId, value, handleChange, placeholder }) {
       multiple
       search
       selection
-      options={data.getTeamMembers.map(tm => ({
-        key: tm.id,
-        value: tm.id,
-        text: tm.username,
-      }))}
+      options={data.getTeamMembers
+        .filter(tm => tm.id !== currentUserId)
+        .map(tm => ({
+          key: tm.id,
+          value: tm.id,
+          text: tm.username,
+        }))}
     />
   )
 }

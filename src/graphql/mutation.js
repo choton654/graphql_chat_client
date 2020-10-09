@@ -17,6 +17,7 @@ export const CREATE_CHANNEL = gql`
       channel {
         id
         name
+        dm
       }
     }
   }
@@ -83,5 +84,13 @@ export const SingleUpload = gql`
 export const createDirectMessageMutation = gql`
   mutation($receiverId: ID!, $text: String!, $teamId: ID!) {
     createDirectMessage(receiverId: $receiverId, text: $text, teamId: $teamId)
+  }
+`
+export const getOrCreateChannelMutation = gql`
+  mutation($teamId: ID!, $members: [ID!]!) {
+    getOrCreateChannel(teamId: $teamId, members: $members) {
+      id
+      name
+    }
   }
 `

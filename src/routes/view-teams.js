@@ -44,6 +44,7 @@ function ViewTeams({ teamId, channelId }) {
           letter: t.name.charAt(0).toUpperCase(),
         }))}
         team={team}
+        currentUserId={data.me.id}
         username={data.me.username}
       />
       {channel && <Header channelName={channel?.name || ""} />}

@@ -38,6 +38,7 @@ export const meQuery = gql`
         channels {
           id
           name
+          dm
         }
       }
     }
@@ -63,6 +64,7 @@ export const directMessageMeQuery = gql`
         channels {
           id
           name
+          dm
         }
       }
     }
@@ -79,8 +81,8 @@ export const GET_USERS = gql`
   }
 `
 export const messagesQuery = gql`
-  query($channelId: ID!) {
-    messages(channelId: $channelId) {
+  query($offset: Int!, $channelId: ID!) {
+    messages(channelId: $channelId, offset: $offset) {
       id
       text
       createdAt

@@ -49,12 +49,21 @@ function Channels({
   username,
   channels,
   users,
+  dmChannels,
   openChannelModal,
   teamId,
   oninvitePeopleClick,
   isOwner,
   onDirectMessageClick,
 }) {
+  const dmChannel = ({ id, name }, teamId) => (
+    <SideBarListItem key={`user-${id}`}>
+      <Link to={`/app/view-team/${teamId}/${id}`}>
+        <Bubble /> {name}
+      </Link>
+    </SideBarListItem>
+  )
+
   return (
     <ChannelWrapper>
       <PushLeft>
@@ -82,16 +91,8 @@ function Channels({
             Direct Messages{" "}
             <Icon onClick={onDirectMessageClick} name="add circle" />
           </SideBarListHeader>
-          {users?.map(({ id, username }) => {
-            return (
-              <SideBarListItem key={`user-${id}`}>
-                <Bubble />
-                <Link to={`/app/view-team/${teamId}/user/${id}`}>
-                  {username}
-                </Link>
-              </SideBarListItem>
-            )
-          })}
+
+          {dmChannels.map(dmC => dmChannel(dmC, teamId))}
         </SideBarList>
       </div>
       {isOwner && (
@@ -106,3 +107,16 @@ function Channels({
 }
 
 export default Channels
+
+{
+  /* {users?.map(({ id, username }) => {
+            return (
+              <SideBarListItem key={`user-${id}`}>
+                <Bubble />
+                <Link to={`/app/view-team/${teamId}/user/${id}`}>
+                  {username}
+                </Link>
+              </SideBarListItem>
+            )
+          })} */
+}
