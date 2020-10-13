@@ -1,5 +1,6 @@
 import { Router } from "@reach/router"
 import React from "react"
+import Home from "../components/Home"
 import CreateTeam from "../routes/create-team"
 import DirectMessage from "../routes/direct-message"
 import PrivateRoute from "../routes/protected-route"
@@ -7,6 +8,7 @@ import ViewTeams from "../routes/view-teams"
 const App = () => {
   return (
     <Router basepath="/app">
+      <Home path="/" />
       <PrivateRoute
         path="/view-team/:teamId/user/:userId"
         component={DirectMessage}

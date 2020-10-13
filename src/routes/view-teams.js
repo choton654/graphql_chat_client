@@ -17,9 +17,9 @@ function ViewTeams({ teamId, channelId }) {
   const client = useApolloClient()
   if (loading) return "Loading..."
   if (error) return `Error! ${error.message}`
-  // if (error.message === "Not authenticated") {
-  //   navigate("/login")
-  // }
+  if (error?.message === "Not authenticated") {
+    navigate("/login")
+  }
 
   if (!error && !data.me.teams.length) {
     navigate("/app/create-team")

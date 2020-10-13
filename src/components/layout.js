@@ -5,7 +5,7 @@ const Layout = ({ children }) => {
   return (
     <div>
       <Menu style={{ marginBottom: 0 }}>
-        <Link to="/">
+        <Link to="/app">
           <Menu.Item>Home</Menu.Item>
         </Link>
         <Link to="/register">

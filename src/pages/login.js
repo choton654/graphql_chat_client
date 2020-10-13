@@ -39,7 +39,8 @@ const Login = () => {
         } else {
           localStorage.setItem("token", data.data.loginUser.token)
           localStorage.setItem("refreshToken", data.data.loginUser.refreshToken)
-          navigate("/app/view-team")
+          // wsLink.subscriptionClient.tryConnect()
+          navigate("/app")
           setUser({
             email: "",
             password: "",

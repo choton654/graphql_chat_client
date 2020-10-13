@@ -65,7 +65,7 @@ function MessageContainer({ channelId }) {
 
     if (
       scrollref.current &&
-      scrollref.current.scrollTop < 100 &&
+      scrollref.current.scrollTop < 20 &&
       data.messages
     ) {
       // 35 items
